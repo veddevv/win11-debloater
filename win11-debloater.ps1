@@ -9,6 +9,25 @@
     Created: November 2025
 #>
 
+# Check if running on Windows
+if ($PSVersionTable.Platform -eq 'Unix' -or $PSVersionTable.Platform -eq 'MacOSX' -or $IsLinux -or $IsMacOS) {
+    Write-Host "ERROR: This script is designed for Windows 11 only!" -ForegroundColor Red
+    Write-Host "This script cannot run on Linux or macOS." -ForegroundColor Red
+    Read-Host "Press Enter to exit"
+    exit 1
+}
+
+# Check Windows version (Windows 11 is build 22000+)
+$winVersion = [System.Environment]::OSVersion.Version
+if ($winVersion.Major -lt 10 -or ($winVersion.Major -eq 10 -and $winVersion.Build -lt 22000)) {
+    Write-Host "WARNING: This script is optimized for Windows 11 (Build 22000+)" -ForegroundColor Yellow
+    Write-Host "You are running: Windows $($winVersion.Major).$($winVersion.Minor) Build $($winVersion.Build)" -ForegroundColor Yellow
+    $continue = Read-Host "Some features may not work correctly. Continue anyway? (Y/N)"
+    if ($continue -ne "Y" -and $continue -ne "y") {
+        exit 0
+    }
+}
+
 # Color functions
 function Write-ColorOutput($ForegroundColor) {
     $fc = $host.UI.RawUI.ForegroundColor
@@ -82,20 +101,6 @@ Write-ColorOutput Cyan "================================================"
 Write-ColorOutput Cyan "    Select What to Remove"
 Write-ColorOutput Cyan "================================================"
 Write-Host ""
-
-# Xbox Apps
-if (Get-UserChoice "Remove Xbox apps? (Game Bar, Xbox, Gaming Services)") {
-    $xboxApps = @(
-        "Microsoft.GamingApp",
-        "Microsoft.XboxApp",
-        "Microsoft.XboxGameOverlay",
-        "Microsoft.XboxGamingOverlay",
-        "Microsoft.XboxIdentityProvider",
-        "Microsoft.XboxSpeechToTextOverlay",
-        "Microsoft.Xbox.TCUI"
-    )
-    Remove-AppPackages -AppNames $xboxApps -CategoryName "Xbox Apps"
-}
 
 # OneDrive
 if (Get-UserChoice "Remove OneDrive?") {
@@ -183,36 +188,12 @@ if (Get-UserChoice "Remove People app?") {
     Remove-AppPackages -AppNames $peopleApps -CategoryName "People"
 }
 
-# Photos
-if (Get-UserChoice "Remove Photos app? (WARNING: Default photo viewer)") {
-    $photoApps = @(
-        "Microsoft.Windows.Photos"
-    )
-    Remove-AppPackages -AppNames $photoApps -CategoryName "Photos"
-}
-
 # Alarms and Clock
 if (Get-UserChoice "Remove Alarms & Clock?") {
     $alarmApps = @(
         "Microsoft.WindowsAlarms"
     )
     Remove-AppPackages -AppNames $alarmApps -CategoryName "Alarms & Clock"
-}
-
-# Calculator
-if (Get-UserChoice "Remove Calculator? (WARNING: Useful app)") {
-    $calcApps = @(
-        "Microsoft.WindowsCalculator"
-    )
-    Remove-AppPackages -AppNames $calcApps -CategoryName "Calculator"
-}
-
-# Camera
-if (Get-UserChoice "Remove Camera app?") {
-    $cameraApps = @(
-        "Microsoft.WindowsCamera"
-    )
-    Remove-AppPackages -AppNames $cameraApps -CategoryName "Camera"
 }
 
 # Feedback Hub
@@ -229,22 +210,6 @@ if (Get-UserChoice "Remove Get Help?") {
         "Microsoft.GetHelp"
     )
     Remove-AppPackages -AppNames $helpApps -CategoryName "Get Help"
-}
-
-# Groove Music
-if (Get-UserChoice "Remove Groove Music?") {
-    $musicApps = @(
-        "Microsoft.ZuneMusic"
-    )
-    Remove-AppPackages -AppNames $musicApps -CategoryName "Groove Music"
-}
-
-# Movies & TV
-if (Get-UserChoice "Remove Movies & TV?") {
-    $videoApps = @(
-        "Microsoft.ZuneVideo"
-    )
-    Remove-AppPackages -AppNames $videoApps -CategoryName "Movies & TV"
 }
 
 # Paint 3D
