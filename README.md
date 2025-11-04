@@ -61,6 +61,10 @@ If you need to restore your system:
 
 MIT License - Use at your own risk. See [LICENSE](LICENSE) for details.
 
+## Recommended Tool
+
+For more advanced privacy and telemetry controls, check out [O&O ShutUp10++](https://www.oo-software.com/en/shutup10) - a free tool with additional Windows privacy settings.
+
 ---
 
 Made with ❤️ for a cleaner Windows
