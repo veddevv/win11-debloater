@@ -13,7 +13,7 @@ Interactive scripts to remove bloatware and unnecessary features from Windows 11
 
 ### Apps & Programs
 
-Xbox apps, OneDrive, Microsoft Teams, Cortana, Office Hub, Mail & Calendar, Weather, News, Sports, Money, Maps, People, Photos, Camera, Alarms & Clock, Calculator, Groove Music, Movies & TV, Paint 3D, Skype, Sticky Notes, Voice Recorder, Your Phone/Phone Link, 3D Viewer, Mixed Reality Portal, Solitaire Collection, Candy Crush, Feedback Hub, Get Help
+OneDrive, Microsoft Teams, Cortana, Office Hub, Mail & Calendar, Weather, News, Sports, Money, Maps, People, Alarms & Clock, Paint 3D, Skype, Sticky Notes, Voice Recorder, Your Phone/Phone Link, 3D Viewer, Mixed Reality Portal, Solitaire Collection, Candy Crush, Feedback Hub, Get Help
 
 ### System Tweaks
 
