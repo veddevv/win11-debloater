@@ -2,8 +2,6 @@
 
 Interactive scripts to remove bloatware from Windows 11. Choose exactly what to remove with simple Y/N prompts.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Windows 11](https://img.shields.io/badge/Windows-11-0078D6?logo=windows&logoColor=white)](https://www.microsoft.com/windows/windows-11)
 
 ## Features
 
