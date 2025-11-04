@@ -5,6 +5,15 @@
 
 title Windows 11 Debloat Script
 
+:: Check if running on Windows
+ver | find "Windows" >nul
+if errorlevel 1 (
+    echo [ERROR] This script is designed for Windows 11 only!
+    echo This script cannot run on Linux or macOS.
+    pause
+    exit /b 1
+)
+
 :: Check for administrator privileges
 net session >nul 2>&1
 if %errorlevel% neq 0 (
@@ -42,23 +51,6 @@ echo ================================================
 echo     Select What to Remove
 echo ================================================
 echo.
-
-:: Xbox Apps
-choice /C YN /M "Remove Xbox apps? (Game Bar, Xbox, Gaming Services)"
-if errorlevel 2 goto skip_xbox
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Xbox Apps...
-    powershell -Command "Get-AppxPackage *Microsoft.GamingApp* | Remove-AppxPackage" >nul 2>&1
-    powershell -Command "Get-AppxPackage *Microsoft.XboxApp* | Remove-AppxPackage" >nul 2>&1
-    powershell -Command "Get-AppxPackage *Microsoft.XboxGameOverlay* | Remove-AppxPackage" >nul 2>&1
-    powershell -Command "Get-AppxPackage *Microsoft.XboxGamingOverlay* | Remove-AppxPackage" >nul 2>&1
-    powershell -Command "Get-AppxPackage *Microsoft.XboxIdentityProvider* | Remove-AppxPackage" >nul 2>&1
-    powershell -Command "Get-AppxPackage *Microsoft.XboxSpeechToTextOverlay* | Remove-AppxPackage" >nul 2>&1
-    powershell -Command "Get-AppxPackage *Microsoft.Xbox.TCUI* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Xbox Apps removed
-)
-:skip_xbox
 
 :: OneDrive
 choice /C YN /M "Remove OneDrive"
@@ -164,17 +156,6 @@ if errorlevel 1 (
 )
 :skip_people
 
-:: Photos
-choice /C YN /M "Remove Photos app? (WARNING: Default photo viewer)"
-if errorlevel 2 goto skip_photos
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Photos app...
-    powershell -Command "Get-AppxPackage *Microsoft.Windows.Photos* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Photos app removed
-)
-:skip_photos
-
 :: Alarms and Clock
 choice /C YN /M "Remove Alarms and Clock"
 if errorlevel 2 goto skip_alarms
@@ -185,28 +166,6 @@ if errorlevel 1 (
     echo   [SUCCESS] Alarms and Clock removed
 )
 :skip_alarms
-
-:: Calculator
-choice /C YN /M "Remove Calculator? (WARNING: Useful app)"
-if errorlevel 2 goto skip_calc
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Calculator...
-    powershell -Command "Get-AppxPackage *Microsoft.WindowsCalculator* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Calculator removed
-)
-:skip_calc
-
-:: Camera
-choice /C YN /M "Remove Camera app"
-if errorlevel 2 goto skip_camera
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Camera app...
-    powershell -Command "Get-AppxPackage *Microsoft.WindowsCamera* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Camera app removed
-)
-:skip_camera
 
 :: Feedback Hub
 choice /C YN /M "Remove Feedback Hub"
@@ -229,28 +188,6 @@ if errorlevel 1 (
     echo   [SUCCESS] Get Help removed
 )
 :skip_help
-
-:: Groove Music
-choice /C YN /M "Remove Groove Music"
-if errorlevel 2 goto skip_music
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Groove Music...
-    powershell -Command "Get-AppxPackage *Microsoft.ZuneMusic* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Groove Music removed
-)
-:skip_music
-
-:: Movies and TV
-choice /C YN /M "Remove Movies and TV"
-if errorlevel 2 goto skip_video
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Movies and TV...
-    powershell -Command "Get-AppxPackage *Microsoft.ZuneVideo* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Movies and TV removed
-)
-:skip_video
 
 :: Paint 3D
 choice /C YN /M "Remove Paint 3D"
