@@ -1,4 +1,4 @@
-# win11-deboater
+# win11-debloater
 
 Interactive scripts to remove bloatware from Windows 11. Choose exactly what to remove with simple Y/N prompts.
 
