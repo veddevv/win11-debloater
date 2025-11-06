@@ -1,9 +1,17 @@
 @echo off
+:: ============================================================================
 :: Windows 11 Debloat Script - Batch Version
-:: Run as Administrator
+:: ============================================================================
+:: Description: Interactive script to remove bloatware from Windows 11
+:: Requirements: Run as Administrator
 :: Created: November 2025
+:: ============================================================================
 
 title Windows 11 Debloat Script
+
+:: ============================================================================
+:: SYSTEM CHECKS
+:: ============================================================================
 
 :: Check if running on Windows
 ver | find "Windows" >nul
@@ -23,6 +31,10 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
+:: ============================================================================
+:: WELCOME & SYSTEM RESTORE POINT
+:: ============================================================================
+
 :welcome
 cls
 echo ================================================
@@ -32,8 +44,10 @@ echo.
 echo WARNING: This script will make significant changes to your system.
 echo It is recommended to create a system restore point before proceeding.
 echo.
+
 choice /C YN /M "Do you want to create a system restore point now"
 if errorlevel 2 goto main_menu
+
 if errorlevel 1 (
     echo Creating system restore point...
     wmic.exe /Namespace:\\root\default Path SystemRestore Call CreateRestorePoint "Before Windows 11 Debloat", 100, 7 >nul 2>&1
@@ -45,6 +59,10 @@ if errorlevel 1 (
     timeout /t 2 >nul
 )
 
+:: ============================================================================
+:: DEBLOAT MENU
+:: ============================================================================
+
 :main_menu
 cls
 echo ================================================
@@ -52,31 +70,48 @@ echo     Select What to Remove
 echo ================================================
 echo.
 
+:: ============================================================================
+:: APPLICATIONS REMOVAL
+:: ============================================================================
+
+:: ----------------------------------------------------------------------------
 :: OneDrive
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Remove OneDrive"
 if errorlevel 2 goto skip_onedrive
+
 if errorlevel 1 (
     echo.
     echo [INFO] Removing OneDrive...
+    
+    :: Kill OneDrive process
     taskkill /f /im OneDrive.exe >nul 2>&1
     timeout /t 2 >nul
+    
+    :: Uninstall OneDrive
     if exist "%SystemRoot%\System32\OneDriveSetup.exe" (
         "%SystemRoot%\System32\OneDriveSetup.exe" /uninstall >nul 2>&1
     )
     if exist "%SystemRoot%\SysWOW64\OneDriveSetup.exe" (
         "%SystemRoot%\SysWOW64\OneDriveSetup.exe" /uninstall >nul 2>&1
     )
+    
+    :: Remove OneDrive folders and registry entries
     rd /s /q "%USERPROFILE%\OneDrive" >nul 2>&1
     rd /s /q "%LOCALAPPDATA%\Microsoft\OneDrive" >nul 2>&1
     rd /s /q "%ProgramData%\Microsoft OneDrive" >nul 2>&1
     reg delete "HKCU\Software\Microsoft\OneDrive" /f >nul 2>&1
+    
     echo   [SUCCESS] OneDrive removed
 )
 :skip_onedrive
 
+:: ----------------------------------------------------------------------------
 :: Microsoft Teams
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Remove Microsoft Teams"
 if errorlevel 2 goto skip_teams
+
 if errorlevel 1 (
     echo.
     echo [INFO] Removing Microsoft Teams...
@@ -86,20 +121,12 @@ if errorlevel 1 (
 )
 :skip_teams
 
-:: Cortana
-choice /C YN /M "Remove Cortana"
-if errorlevel 2 goto skip_cortana
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Cortana...
-    powershell -Command "Get-AppxPackage *Microsoft.549981C3F5F10* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Cortana removed
-)
-:skip_cortana
-
+:: ----------------------------------------------------------------------------
 :: Office Hub
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Remove Office Hub"
 if errorlevel 2 goto skip_office
+
 if errorlevel 1 (
     echo.
     echo [INFO] Removing Office Hub...
@@ -109,24 +136,15 @@ if errorlevel 1 (
 )
 :skip_office
 
-:: Mail and Calendar
-choice /C YN /M "Remove Mail and Calendar"
-if errorlevel 2 goto skip_mail
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Mail and Calendar...
-    powershell -Command "Get-AppxPackage *microsoft.windowscommunicationsapps* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Mail and Calendar removed
-)
-:skip_mail
-
-:: MSN Apps
-choice /C YN /M "Remove Weather, News, Money, and Sports apps"
+:: ----------------------------------------------------------------------------
+:: MSN Apps (News, Money, Sports)
+:: ----------------------------------------------------------------------------
+choice /C YN /M "Remove News, Money, and Sports apps"
 if errorlevel 2 goto skip_msn
+
 if errorlevel 1 (
     echo.
     echo [INFO] Removing MSN Apps...
-    powershell -Command "Get-AppxPackage *Microsoft.BingWeather* | Remove-AppxPackage" >nul 2>&1
     powershell -Command "Get-AppxPackage *Microsoft.BingNews* | Remove-AppxPackage" >nul 2>&1
     powershell -Command "Get-AppxPackage *Microsoft.BingFinance* | Remove-AppxPackage" >nul 2>&1
     powershell -Command "Get-AppxPackage *Microsoft.BingSports* | Remove-AppxPackage" >nul 2>&1
@@ -134,62 +152,9 @@ if errorlevel 1 (
 )
 :skip_msn
 
-:: Maps
-choice /C YN /M "Remove Windows Maps"
-if errorlevel 2 goto skip_maps
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Windows Maps...
-    powershell -Command "Get-AppxPackage *Microsoft.WindowsMaps* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Windows Maps removed
-)
-:skip_maps
-
-:: People
-choice /C YN /M "Remove People app"
-if errorlevel 2 goto skip_people
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing People app...
-    powershell -Command "Get-AppxPackage *Microsoft.People* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] People app removed
-)
-:skip_people
-
-:: Alarms and Clock
-choice /C YN /M "Remove Alarms and Clock"
-if errorlevel 2 goto skip_alarms
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Alarms and Clock...
-    powershell -Command "Get-AppxPackage *Microsoft.WindowsAlarms* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Alarms and Clock removed
-)
-:skip_alarms
-
-:: Feedback Hub
-choice /C YN /M "Remove Feedback Hub"
-if errorlevel 2 goto skip_feedback
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Feedback Hub...
-    powershell -Command "Get-AppxPackage *Microsoft.WindowsFeedbackHub* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Feedback Hub removed
-)
-:skip_feedback
-
-:: Get Help
-choice /C YN /M "Remove Get Help"
-if errorlevel 2 goto skip_help
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Get Help...
-    powershell -Command "Get-AppxPackage *Microsoft.GetHelp* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Get Help removed
-)
-:skip_help
-
+:: ----------------------------------------------------------------------------
 :: Paint 3D
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Remove Paint 3D"
 if errorlevel 2 goto skip_paint3d
 if errorlevel 1 (
@@ -200,53 +165,15 @@ if errorlevel 1 (
 )
 :skip_paint3d
 
-:: Skype
-choice /C YN /M "Remove Skype"
-if errorlevel 2 goto skip_skype
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Skype...
-    powershell -Command "Get-AppxPackage *Microsoft.SkypeApp* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Skype removed
-)
-:skip_skype
-
-:: Sticky Notes
-choice /C YN /M "Remove Sticky Notes"
-if errorlevel 2 goto skip_sticky
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Sticky Notes...
-    powershell -Command "Get-AppxPackage *Microsoft.MicrosoftStickyNotes* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Sticky Notes removed
-)
-:skip_sticky
-
-:: Voice Recorder
-choice /C YN /M "Remove Voice Recorder"
-if errorlevel 2 goto skip_voice
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Voice Recorder...
-    powershell -Command "Get-AppxPackage *Microsoft.WindowsSoundRecorder* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Voice Recorder removed
-)
-:skip_voice
-
-:: Your Phone
-choice /C YN /M "Remove Your Phone/Phone Link"
-if errorlevel 2 goto skip_phone
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Your Phone...
-    powershell -Command "Get-AppxPackage *Microsoft.YourPhone* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Your Phone removed
-)
-:skip_phone
-
+:: ----------------------------------------------------------------------------
 :: 3D Viewer
+:: ----------------------------------------------------------------------------
+:: ----------------------------------------------------------------------------
+:: 3D Viewer
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Remove 3D Viewer"
 if errorlevel 2 goto skip_3d
+
 if errorlevel 1 (
     echo.
     echo [INFO] Removing 3D Viewer...
@@ -255,9 +182,12 @@ if errorlevel 1 (
 )
 :skip_3d
 
+:: ----------------------------------------------------------------------------
 :: Mixed Reality Portal
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Remove Mixed Reality Portal"
 if errorlevel 2 goto skip_mr
+
 if errorlevel 1 (
     echo.
     echo [INFO] Removing Mixed Reality Portal...
@@ -266,9 +196,12 @@ if errorlevel 1 (
 )
 :skip_mr
 
-:: Solitaire
+:: ----------------------------------------------------------------------------
+:: Microsoft Solitaire Collection
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Remove Microsoft Solitaire Collection"
 if errorlevel 2 goto skip_solitaire
+
 if errorlevel 1 (
     echo.
     echo [INFO] Removing Solitaire Collection...
@@ -277,36 +210,40 @@ if errorlevel 1 (
 )
 :skip_solitaire
 
-:: Candy Crush
-choice /C YN /M "Remove Candy Crush and promoted games"
-if errorlevel 2 goto skip_games
-if errorlevel 1 (
-    echo.
-    echo [INFO] Removing Promoted Games...
-    powershell -Command "Get-AppxPackage *king.com.CandyCrush* | Remove-AppxPackage" >nul 2>&1
-    echo   [SUCCESS] Promoted Games removed
-)
-:skip_games
+:: ============================================================================
+:: SYSTEM TWEAKS & PRIVACY SETTINGS
+:: ============================================================================
 
-:: Telemetry
+:: ----------------------------------------------------------------------------
+:: Telemetry and Data Collection
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Disable Telemetry and Data Collection"
 if errorlevel 2 goto skip_telemetry
+
 if errorlevel 1 (
     echo.
     echo [INFO] Disabling Telemetry...
+    
+    :: Disable telemetry through registry
     reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f >nul 2>&1
     reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f >nul 2>&1
+    
+    :: Disable telemetry services
     sc stop DiagTrack >nul 2>&1
     sc config DiagTrack start=disabled >nul 2>&1
     sc stop dmwappushservice >nul 2>&1
     sc config dmwappushservice start=disabled >nul 2>&1
+    
     echo   [SUCCESS] Telemetry disabled
 )
 :skip_telemetry
 
-:: Windows Tips
+:: ----------------------------------------------------------------------------
+:: Windows Tips and Suggestions
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Disable Windows Tips and Suggestions"
 if errorlevel 2 goto skip_tips
+
 if errorlevel 1 (
     echo.
     echo [INFO] Disabling Windows Tips...
@@ -317,9 +254,12 @@ if errorlevel 1 (
 )
 :skip_tips
 
-:: Bing Search
+:: ----------------------------------------------------------------------------
+:: Bing Search in Start Menu
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Disable Bing Search in Start Menu"
 if errorlevel 2 goto skip_bing
+
 if errorlevel 1 (
     echo.
     echo [INFO] Disabling Bing Search...
@@ -328,9 +268,12 @@ if errorlevel 1 (
 )
 :skip_bing
 
+:: ----------------------------------------------------------------------------
 :: Activity History
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Disable Activity History"
 if errorlevel 2 goto skip_activity
+
 if errorlevel 1 (
     echo.
     echo [INFO] Disabling Activity History...
@@ -341,9 +284,12 @@ if errorlevel 1 (
 )
 :skip_activity
 
-:: Store Auto-Updates
+:: ----------------------------------------------------------------------------
+:: Microsoft Store Auto-Updates
+:: ----------------------------------------------------------------------------
 choice /C YN /M "Disable automatic updates for Microsoft Store apps"
 if errorlevel 2 goto skip_store
+
 if errorlevel 1 (
     echo.
     echo [INFO] Disabling Store Auto-Updates...
@@ -351,6 +297,10 @@ if errorlevel 1 (
     echo   [SUCCESS] Store Auto-Updates disabled
 )
 :skip_store
+
+:: ============================================================================
+:: COMPLETION
+:: ============================================================================
 
 :complete
 echo.
@@ -360,8 +310,10 @@ echo ================================================
 echo.
 echo It is recommended to restart your computer for all changes to take effect.
 echo.
+
 choice /C YN /M "Do you want to restart now"
 if errorlevel 2 goto exit
+
 if errorlevel 1 (
     echo.
     echo Restarting in 10 seconds...
