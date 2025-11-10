@@ -1,6 +1,6 @@
 @echo off
 :: ============================================================================
-:: Windows 11 Debloat Script - Batch Version
+:: win11-debloater - Batch Version
 :: ============================================================================
 :: Description: Interactive script to remove bloatware from Windows 11
 :: Requirements: Run as Administrator
