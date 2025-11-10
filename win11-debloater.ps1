@@ -1,7 +1,7 @@
 #Requires -RunAsAdministrator
 <#
 .SYNOPSIS
-    Windows 11 Debloat Script - PowerShell Version
+    win11-debloater - PowerShell Version
 
 .DESCRIPTION
     Interactive script to remove bloatware and unnecessary features from Windows 11.
