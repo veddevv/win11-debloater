@@ -32,7 +32,7 @@ if ($PSVersionTable.Platform -eq 'Unix' -or $PSVersionTable.Platform -eq 'MacOSX
 
 # Check Windows version (Windows 11 is build 22000+)
 $winVersion = [System.Environment]::OSVersion.Version
-if ($winVersion.Major -lt 10 -or ($winVersion.Major -eq 10 -and $winVersion.Build -lt 22000)) {
+if ($winVersion.Build -lt 22000) {
     Write-Host "WARNING: This script is optimized for Windows 11 (Build 22000+)" -ForegroundColor Yellow
     Write-Host "You are running: Windows $($winVersion.Major).$($winVersion.Minor) Build $($winVersion.Build)" -ForegroundColor Yellow
     $continue = Read-Host "Some features may not work correctly. Continue anyway? (Y/N)"
@@ -230,7 +230,9 @@ if (Get-UserChoice "Disable Telemetry and Data Collection?") {
     Write-ColorOutput Cyan "`nDisabling Telemetry..."
     try {
         # Disable telemetry through registry
+        New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Force -ErrorAction SilentlyContinue | Out-Null
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Value 0 -Force -ErrorAction SilentlyContinue
+        New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Force -ErrorAction SilentlyContinue | Out-Null
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Value 0 -Force -ErrorAction SilentlyContinue
         
         # Disable telemetry services
@@ -280,6 +282,7 @@ if (Get-UserChoice "Disable Bing Search in Start Menu?") {
 if (Get-UserChoice "Disable Activity History?") {
     Write-ColorOutput Cyan "`nDisabling Activity History..."
     try {
+        New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Force -ErrorAction SilentlyContinue | Out-Null
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "EnableActivityFeed" -Value 0 -Force -ErrorAction SilentlyContinue
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "PublishUserActivities" -Value 0 -Force -ErrorAction SilentlyContinue
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "UploadUserActivities" -Value 0 -Force -ErrorAction SilentlyContinue
