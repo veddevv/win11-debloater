@@ -225,7 +225,9 @@ if errorlevel 1 (
     echo [INFO] Disabling Telemetry...
     
     :: Disable telemetry through registry
+    reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows" /f >nul 2>&1
     reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f >nul 2>&1
+    reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies" /f >nul 2>&1
     reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f >nul 2>&1
     
     :: Disable telemetry services
@@ -263,6 +265,7 @@ if errorlevel 2 goto skip_bing
 if errorlevel 1 (
     echo.
     echo [INFO] Disabling Bing Search...
+    reg add "HKCU\Software\Policies\Microsoft\Windows" /f >nul 2>&1
     reg add "HKCU\Software\Policies\Microsoft\Windows\Explorer" /v DisableSearchBoxSuggestions /t REG_DWORD /d 1 /f >nul 2>&1
     echo   [SUCCESS] Bing Search disabled
 )
@@ -277,6 +280,7 @@ if errorlevel 2 goto skip_activity
 if errorlevel 1 (
     echo.
     echo [INFO] Disabling Activity History...
+    reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows" /f >nul 2>&1
     reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v EnableActivityFeed /t REG_DWORD /d 0 /f >nul 2>&1
     reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v PublishUserActivities /t REG_DWORD /d 0 /f >nul 2>&1
     reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v UploadUserActivities /t REG_DWORD /d 0 /f >nul 2>&1
@@ -293,6 +297,7 @@ if errorlevel 2 goto skip_store
 if errorlevel 1 (
     echo.
     echo [INFO] Disabling Store Auto-Updates...
+    reg add "HKLM\SOFTWARE\Policies\Microsoft" /f >nul 2>&1
     reg add "HKLM\SOFTWARE\Policies\Microsoft\WindowsStore" /v AutoDownload /t REG_DWORD /d 2 /f >nul 2>&1
     echo   [SUCCESS] Store Auto-Updates disabled
 )
