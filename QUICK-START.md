@@ -88,9 +88,7 @@ Just want to remove bloatware?
 ## 📚 More Info
 
 - **[README.md](README.md)** - Full documentation
-- **[README-GAMING.md](README-GAMING.md)** - Gaming features
 - **[WHICH-VERSION.md](WHICH-VERSION.md)** - Version comparison
-- **[GAMING-FEATURES.md](GAMING-FEATURES.md)** - Technical details
 
 ## ⏱️ Time Required
 
