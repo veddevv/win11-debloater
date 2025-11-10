@@ -97,10 +97,6 @@ If you need to restore your system:
 3. Select the restore point created by the script
 4. Follow the restoration wizard
 
-## License
-
-MIT License - Use at your own risk. See [LICENSE](LICENSE) for details.
-
 ## Recommended Tool
 
 For more advanced privacy and telemetry controls, check out [O&O ShutUp10++](https://www.oo-software.com/en/shutup10) - a free tool with additional Windows privacy settings.
