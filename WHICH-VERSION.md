@@ -165,7 +165,3 @@ Choose **Gaming version**. The optimizations won't hurt productivity, and you'll
 - **Everything else** = Standard Version (PowerShell)
 - **Old PC/Compatibility issues** = Use Batch versions
 - **When in doubt** = Start with Standard, upgrade to Gaming if needed
-
----
-
-For detailed feature lists, see [README.md](README.md) (standard) or [README-GAMING.md](README-GAMING.md) (gaming)
