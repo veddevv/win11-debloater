@@ -9,7 +9,7 @@
 
 .NOTES
     Filename    : win11-debloater.ps1
-    Author      : Windows 11 Debloat Script
+    Author      : rtdsx
     Created     : November 2025
     Requires    : PowerShell 5.1+ and Administrator privileges
     
