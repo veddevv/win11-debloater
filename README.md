@@ -2,15 +2,6 @@
 
 Interactive scripts to remove bloatware and unnecessary features from Windows 11. Each prompt gives you full control - answer Y to remove, N to keep.
 
-## 🎮 NEW - Gaming Versions Available
-
-**For gamers seeking maximum performance**, check out the enhanced gaming versions on [win11-debloater-gaming](https://github.com/notrtdsx/win11-debloater-gaming)!
-
-- **`win11-debloater-gaming.ps1`** - Gaming-optimized PowerShell version
-- **`win11-debloater-gaming.bat`** - Gaming-optimized Batch version
-
-Gaming versions include **advanced tweaks**: GPU scheduling, network optimizations, input lag reduction, CPU core parking, and more!
-
 ## Features
 
 - **Interactive prompts** - Choose what to remove with Y/N for each item
