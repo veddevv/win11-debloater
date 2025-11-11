@@ -122,7 +122,7 @@ if (Get-UserChoice "Remove OneDrive?") {
     Write-ColorOutput Cyan "`nRemoving OneDrive..."
     try {
         # Kill OneDrive process
-        taskkill /f /im OneDrive.exe 2>$null
+        taskkill /f /im OneDrive.exe 2>&1 | Out-Null
         Start-Sleep -Seconds 2
         
         # Uninstall OneDrive
@@ -194,7 +194,8 @@ if (Get-UserChoice "Remove Paint 3D?") {
 #------------------------------------------------------------------------------
 if (Get-UserChoice "Remove 3D Viewer?") {
     $3dApps = @(
-        "Microsoft.Microsoft3DViewer"
+    "Microsoft.Microsoft3DViewer"
+)
     )
     Remove-AppPackages -AppNames $3dApps -CategoryName "3D Viewer"
 }
